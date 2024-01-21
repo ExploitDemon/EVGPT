@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup, Tag
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
 url = "https://www.nba.com/stats/players/advanced?sort=W&dir=-1"
@@ -22,7 +22,7 @@ headers = []
 for i in range(0, 10):
     # Wait for the DOM to load and for the table to be present
     WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located(
+        ec.presence_of_element_located(
             (By.CSS_SELECTOR, "table.Crom_table__p1iZz")
         )
     )
@@ -59,16 +59,20 @@ for i in range(0, 10):
             data.append(row_data)
 
     # Wait for the 'Next Page' button to be clickable and then click it
-    next_button_xpath = "/html[1]/body[1]/div[1]/div[2]/div[2]/div[3]/section[2]/div[1]/div[2]/div[2]/div[1]/div[5]/button[2]"
+    next_button_xpath = (
+        "/html[1]/body[1]/div[1]/div[2]/div[2]/div["
+        "3]/section[2]/div[1]/div[2]/div[2]/div[1]/div["
+        "5]/button[2]"
+    )
     WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, next_button_xpath))
+        ec.element_to_be_clickable((By.XPATH, next_button_xpath))
     )
     next_button = driver.find_element(By.XPATH, next_button_xpath)
     next_button.click()
 
     # Wait for the next page to load by checking the presence of the table
     WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located(
+        ec.presence_of_element_located(
             (By.CSS_SELECTOR, "table.Crom_table__p1iZz")
         )
     )
